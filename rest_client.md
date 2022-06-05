@@ -1,0 +1,32 @@
+#  REST Client 
+
+GET https://jsonplaceholder.typicode.com/posts
+
+###
+
+GET https://api.cdnjs.com/libraries
+
+###
+
+POST http://localhost:9001/user/add
+Content-Type: application/json
+
+{
+    "id":1,
+    "name":"yuxin",
+    "age":26,
+    "addr":"china"
+}
+
+###
+
+GET https://api.cdnjs.com/libraries
+?search=jquery
+#可以换行
+
+#变量
+
+@basic = https://api.cdnjs.com
+
+###
+GET {{basic}}/libraries
