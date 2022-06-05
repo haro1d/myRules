@@ -1,4 +1,5 @@
 #  REST Client 
+#  命名：.http or .rest
 
 GET https://jsonplaceholder.typicode.com/posts
 
