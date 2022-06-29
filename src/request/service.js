@@ -11,15 +11,14 @@ const service = axios.create({
   // baseURL:'http://192.168.110.116:8000',
   // 超时时间 单位是ms，这里设置了3s的超时时间
   timeout: 20 * 1000,
+  headers: {
+     'Content-Type':'application/json', //配置请求头
+   }
 })
 // 2.请求拦截器
 service.interceptors.request.use(config => {
   //发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等，根据需求去添加
   // config.data = JSON.stringify(config.data); //数据转化,也可以使用qs转换
-   config.headers = {
-     'Content-Type':'application/json', //配置请求头
-   }
-   //注意使用token的时候需要引入cookie方法或者用本地localStorage等方法，推荐js-cookie
 
   const authorization = localStorage.getItem("authorization")//这里取token之前，你肯定需要先拿到token,存一下
 
@@ -33,14 +32,18 @@ service.interceptors.request.use(config => {
 })
 
 // 3.响应拦截器
-service.interceptors.response.use(response => {
+service.interceptors.response.use(res => {
   //接收到响应数据并成功后的一些共有的处理，关闭loading等
-  if(response.data.code === 401){
-    Message.error(response.data.msg)
+  if(res.data.code === 401){
+    Message.error(res.data.msg)
     router.replace('/login')
     return false
   }
-  return Promise.resolve(response.data)
+  if(res.data.code !== 200){
+    console.log("reject: ", res.data);
+    return Promise.reject(res.data)
+  }
+  return Promise.resolve(res.data)
   
 }, error => {
   console.log("response error: ",error);
